@@ -13,7 +13,7 @@ https.createServer({
 	key: fs.readFileSync('cert/key.pem'),
 	cert: fs.readFileSync('cert/cert.pem'),
 }, app)
-.listen(process.env.WEB_PORT || 4000, () => 
+.listen(process.env.PORT || 4000, () => 
   console.log(`Secure server on port ${process.env.WEB_PORT || 4000}...`)
 );
 
