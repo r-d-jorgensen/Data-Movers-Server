@@ -1,0 +1,25 @@
+{
+  "name": "data-movers-server",
+  "version": "1.0.0",
+  "main": "main.js",
+  "scripts": {
+    "start": "nodemon main.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/r-d-jorgensen/Data-Movers-Server.git"
+  },
+  "author": "David Jorgensen",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/r-d-jorgensen/Data-Movers-Server/issues"
+  },
+  "homepage": "https://github.com/r-d-jorgensen/Data-Movers-Server#readme",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^16.0.1",
+    "express": "^4.18.1",
+    "mysql": "^2.18.1",
+    "nodemon": "^2.0.19"
+  }
+}
