@@ -58,6 +58,7 @@ app.get('/api/user/login/:username/:password', (req, res) => {
   });
 });
 
+// TODO: stop same usernames from happening
 app.get('/api/user/newUser/:username/:password/:email', (req, res) => {
   const query = "INSERT INTO users (username, user_password, email, user_type_ENUM_id) VALUES (?, ?, ?, 3)";
   dbConnection.query(query, [req.params.username, req.params.password, req.params.email], function (err, result) {
