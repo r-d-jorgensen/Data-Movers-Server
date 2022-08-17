@@ -38,7 +38,8 @@ app.get('/api/', (req, res) => {
 	res.send("This is a help and doc page response");
 });
 
-app.get('/api/user/login/:username/:password', (req, res) => {
+// return user auth if match
+app.get('/api/user/login/:username/:password', (req, res) => { 
   const query = "SELECT * FROM users WHERE username = ? AND user_password = ?";
   dbConnection.query(query, [req.params.username, req.params.password], function (err, result) {
     if (err) {
@@ -58,8 +59,9 @@ app.get('/api/user/login/:username/:password', (req, res) => {
   });
 });
 
-// TODO: stop same usernames from happening
+// sign up new user
 app.get('/api/user/newUser/:username/:password/:email', (req, res) => {
+  // check if username already exists
   const checkUsernameQuery = "SELECT * FROM users WHERE username = ?";
   dbConnection.query(checkUsernameQuery, [req.params.username, req.params.password], function (err, result) {
     if (err) {
@@ -70,6 +72,7 @@ app.get('/api/user/newUser/:username/:password/:email', (req, res) => {
       res.status(200).json({isAuthed: false, token: "", error: "Username is already in use"});
     } else {
       // TODO: fix the nesting of these queries
+      // insert new user and return user auth
       const newUserQuery = "INSERT INTO users (username, user_password, email, user_type_ENUM_id) VALUES (?, ?, ?, 3)";
       dbConnection.query(newUserQuery, [req.params.username, req.params.password, req.params.email], function (err, result) {
         if (err) {
@@ -85,6 +88,4 @@ app.get('/api/user/newUser/:username/:password/:email', (req, res) => {
       });
     }
   });
-
-  
 });
