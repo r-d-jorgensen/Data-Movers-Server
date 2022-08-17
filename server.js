@@ -9,10 +9,12 @@ const app = express();
 app.use(express.json({ limit: '50mb' }));
 app.use(cors());
 
-https.createServer({
-	key: fs.readFileSync('cert/key.pem'),
-	cert: fs.readFileSync('cert/cert.pem'),
-}, app)
+// https.createServer({
+// 	key: fs.readFileSync('cert/key.pem'),
+// 	cert: fs.readFileSync('cert/cert.pem'),
+// },
+app
+// )
 .listen(process.env.PORT || 4000, () => 
   console.log(`Secure server on port ${process.env.WEB_PORT || 4000}...`)
 );
