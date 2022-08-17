@@ -40,15 +40,15 @@ app.get('/api/', (req, res) => {
 
 app.get('/api/user/login/:username/:password', (req, res) => {
   const query = "SELECT * FROM users WHERE username = ? AND user_password = ?";
-  dbConnection.query(query, [req.params.username, req.params.password], function (err, result, fields) {
+  dbConnection.query(query, [req.params.username, req.params.password], function (err, result) {
     if (err) {
-      res.status(200).json({isAuthed: false, token: null, error: "Server Error"});
+      res.status(200).json({isAuthed: false, token: "", error: "Server Error"});
       throw err;
-    };
+    }
     if (result[0]) {
       res.status(200).json({isAuthed: true, token: "is authed", user: result[0]});
       return;
     }
-    res.status(200).json({isAuthed: false, token: null, error: "Incorrect Username or Password"});
+    res.status(200).json({isAuthed: false, token: "", error: "Incorrect Username or Password"});
   });
 });
