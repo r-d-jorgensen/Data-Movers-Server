@@ -9,13 +9,8 @@ const app = express();
 app.use(express.json({ limit: '50mb' }));
 app.use(cors());
 
-// https.createServer({
-// 	key: fs.readFileSync('cert/key.pem'),
-// 	cert: fs.readFileSync('cert/cert.pem'),
-// },
-app
-// )
-.listen(process.env.PORT || 4000, () => 
+
+app.listen(process.env.PORT || 4000, () => 
   console.log(`Secure server on port ${process.env.WEB_PORT || 4000}...`)
 );
 
@@ -36,12 +31,12 @@ dbConnection.connect((err) => {
 	console.log("Connected to database.");
 });
 
-app.get('/api/', (req, res) => {
+app.get('/', (req, res) => {
 	res.send("This is a help and doc page response");
 });
 
 // return user auth if match
-app.get('/api/user/login/:username/:password', (req, res) => { 
+app.get('/user/login/:username/:password', (req, res) => { 
   const query = "SELECT * FROM users WHERE username = ? AND user_password = ?";
   dbConnection.query(query, [req.params.username, req.params.password], function (err, result) {
     if (err) {
@@ -62,7 +57,7 @@ app.get('/api/user/login/:username/:password', (req, res) => {
 });
 
 // sign up new user
-app.get('/api/user/newUser/:username/:password/:email', (req, res) => {
+app.get('/user/newUser/:username/:password/:email', (req, res) => {
   // check if username already exists
   const checkUsernameQuery = "SELECT * FROM users WHERE username = ?";
   dbConnection.query(checkUsernameQuery, [req.params.username, req.params.password], function (err, result) {
