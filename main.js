@@ -46,9 +46,30 @@ app.get('/api/user/login/:username/:password', (req, res) => {
       throw err;
     }
     if (result[0]) {
-      res.status(200).json({isAuthed: true, token: "is authed", user: result[0]});
+      res.status(200).json({
+        isAuthed: true,
+        token: "is authed",
+        user_id: result[0].user_id,
+        user_type_ENUM_id: result[0].user_type_ENUM_id
+      });
       return;
     }
     res.status(200).json({isAuthed: false, token: "", error: "Incorrect Username or Password"});
+  });
+});
+
+app.get('/api/user/newUser/:username/:password/:email', (req, res) => {
+  const query = "INSERT INTO users (username, user_password, email, user_type_ENUM_id) VALUES (?, ?, ?, 3)";
+  dbConnection.query(query, [req.params.username, req.params.password, req.params.email], function (err, result) {
+    if (err) {
+      res.status(200).json({isAuthed: false, token: "", error: "Server Error"});
+      throw err;
+    }
+    res.status(200).json({
+      isAuthed: true,
+      token: "is authed",
+      user_id: result.insertId,
+      user_type_ENUM_id: 3
+    });
   });
 });
