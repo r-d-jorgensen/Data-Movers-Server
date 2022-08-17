@@ -1,9 +1,9 @@
 {
   "name": "data-movers-server",
   "version": "1.0.0",
-  "main": "main.js",
+  "main": "server.js",
   "scripts": {
-    "start": "nodemon main.js"
+    "start": "nodemon server.js"
   },
   "repository": {
     "type": "git",
