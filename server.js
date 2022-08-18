@@ -14,6 +14,8 @@ app.listen(process.env.PORT || 4000, () =>
   console.log(`Secure server on port ${process.env.WEB_PORT || 4000}...`)
 );
 
+// TODO: update rds connection to only accept from trusted ip's
+// TODO: update to using a connection pool to limit problems
 const dbConnection = mysql.createConnection({
 	host: process.env.DB_HOST,
 	user: process.env.DB_USER,
