@@ -13,6 +13,8 @@ app.listen(process.env.PORT || 4000, () =>
   console.log(`Secure server on port ${process.env.WEB_PORT || 4000}...`)
 );
 
+// TODO: Catch errors that may cause server crash... implement loggin
+
 // check connection to DB
 try {
   pool.query('SELECT 1 + 1 AS solution', (error, results) => {
