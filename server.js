@@ -53,8 +53,8 @@ app.get('/user/login/:username/:password', async (req, res) => {
       return;
     } else throw new Error("Incorrect Username or Password");
   } catch (err) {
-    res.status(200).json({isAuthed: false, token: null, error: err});
-    console.log(err); // TODO: logging
+    res.status(200).json({isAuthed: false, token: null, error: err.message});
+    console.log(err.message); // TODO: logging
   } finally {
     await connection.release();
   }
@@ -72,20 +72,19 @@ app.get('/user/newUser/:username/:password/:email', async (req, res) => {
     // insert new user and return auth
     const newUserQuery = "INSERT INTO users (username, user_password, email, user_type_ENUM_id) VALUES (?, ?, ?, 3)";
     const newUserAuth = await connection.query(newUserQuery, [req.params.username, req.params.password, req.params.email]);
-    console.log(newUserAuth)
-    if (newUserAuth[0]) {
+    if (newUserAuth) {
       res.status(200).json({
         isAuthed: true,
         token: "is authed",
-        user_id: newUserAuth[0].insertId,
+        user_id: newUserAuth.insertId,
         user_type_ENUM_id: 3,
         error: null
       });
-    } else throw new Error("Sever had problems with you sign up try again latter");
+    } else throw new Error("Sever had problems with your sign up try again latter");
 
   } catch (err) {
-    res.status(200).json({isAuthed: false, token: null, error: err});
-    console.log(err); // TODO: logging
+    res.status(200).json({isAuthed: false, token: null, error: err.message});
+    console.log(err.message); // TODO: logging
   } finally {
     await connection.release()
   }
