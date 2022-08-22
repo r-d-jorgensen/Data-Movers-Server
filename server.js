@@ -9,7 +9,7 @@ const app = express();
 app.use(express.json({ limit: '50mb' }));
 app.use(cors());
 app.listen(process.env.PORT || 4000, () => 
-  console.log(`Secure server on port ${process.env.WEB_PORT || 4000}...`)
+  console.log(`Secure server on port ${process.env.WEB_PORT || 4000}...`) // TODO: logging
 );
 
 // TODO: Implement Logging instead of pushing everything to console
@@ -19,7 +19,7 @@ app.listen(process.env.PORT || 4000, () =>
   const connection = await mysql.connection();
   try {
     const check = await connection.query("SELECT 1 + 1 AS solution");
-    if (check[0].solution === 2) console.log("Connected to Database");
+    if (check[0].solution === 2) console.log("Connected to Database"); // TODO: logging
     else throw new Error("Error with DB Connection");
   } catch (err) {
     console.log(err); // TODO: logging
