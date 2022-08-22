@@ -4,6 +4,7 @@ const cors = require('cors');
 const https = require('https');
 const fs = require('fs');
 const mysql = require('./util/mysql.js');
+const { jwtTokenMaker } = require('./util/jwtTokenMaker.js');
 
 const app = express();
 app.use(express.json({ limit: '50mb' }));
@@ -11,6 +12,11 @@ app.use(cors());
 app.listen(process.env.PORT || 4000, () => 
   console.log(`Secure server on port ${process.env.WEB_PORT || 4000}...`) // TODO: logging
 );
+
+process.on('uncaughtException', err => {
+  console.error('There was an uncaught error', err); // TODO: logging
+  process.exit(1); // mandatory (as per the Node.js docs)
+});
 
 // TODO: Implement Logging instead of pushing everything to console
 // TODO: DB Calls should be moved to thier own section
@@ -39,14 +45,15 @@ app.get('/user/login/:username/:password', async (req, res) => {
     if (userAuth[0]) {
       res.status(200).json({
         isAuthed: true,
-        token: "is authed",
+        token: jwtTokenMaker(),
         user_id: userAuth[0].user_id,
-        user_type_ENUM_id: userAuth[0].user_type_ENUM_id
+        user_type_ENUM_id: userAuth[0].user_type_ENUM_id,
+        error: null
       });
       return;
     } else throw new Error("Incorrect Username or Password");
   } catch (err) {
-    res.status(200).json({isAuthed: false, token: "", error: err});
+    res.status(200).json({isAuthed: false, token: null, error: err});
     console.log(err); // TODO: logging
   } finally {
     await connection.release();
@@ -71,12 +78,13 @@ app.get('/user/newUser/:username/:password/:email', async (req, res) => {
         isAuthed: true,
         token: "is authed",
         user_id: newUserAuth[0].insertId,
-        user_type_ENUM_id: 3
+        user_type_ENUM_id: 3,
+        error: null
       });
     } else throw new Error("Sever had problems with you sign up try again latter");
 
   } catch (err) {
-    res.status(200).json({isAuthed: false, token: "", error: err});
+    res.status(200).json({isAuthed: false, token: null, error: err});
     console.log(err); // TODO: logging
   } finally {
     await connection.release()
